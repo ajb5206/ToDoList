@@ -39,4 +39,9 @@ namespace ToDoList
 			});
 		}
 	}
+	
+	public static class DBConfiguration
+	{
+		public static string ConnectionString = "server=localhost;user id=root;password=peicodus;port=3360;database=to_do_list;";
+	}
 }
