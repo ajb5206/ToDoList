@@ -7,7 +7,7 @@ namespace ToDoList.Models
 	{
 		public string Description { get; set; }
 		public int Price {get; set; }
-		public int Id { get; }
+		public int Id { get; set; }
 
 		public Item(string description, int price)
 		{
@@ -31,8 +31,33 @@ namespace ToDoList.Models
 			else
 			{
 				Item newItem = (Item) otherItem;
-				bool propertyEquality = (this.Description == newItem.Description && this.Price == newItem.Price);
-				return propertyEquality;
+				bool idEquality = (this.Id == newItem.Id);
+				bool descriptionEquality = (this.Description == newItem.Description);
+				bool priceEquality = (this.Price == newItem.Price);
+				return (idEquality && descriptionEquality && priceEquality);
+			}
+		}
+
+		public void Save()
+		{
+			MySqlConnection conn = DB.Connection();
+			conn.Open();
+			MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+			cmd.CommandText = @"INSERT INTO items (description, price) VALUES (@ItemDescription, @ItemPrice);";
+			MySqlParameter description = new MySqlParameter();
+			description.ParameterName = "@ItemDescription";
+			description.Value = this.Description;
+			cmd.Parameters.Add(description);
+			MySqlParameter price = new MySqlParameter();
+			price.ParameterName = "@ItemPrice";
+			price.Value = this.Price;
+			cmd.Parameters.Add(price);
+			cmd.ExecuteNonQuery();
+			Id = (int) cmd.LastInsertedId;
+			conn.Close();
+			if (conn != null)
+			{
+				conn.Dispose();
 			}
 		}
 
@@ -49,7 +74,7 @@ namespace ToDoList.Models
 				int itemId = rdr.GetInt32(0);
 				string itemDescription = rdr.GetString(1);
 				int itemPrice = rdr.GetInt32(2);
-				Item newItem = new Item(itemDescription, itemId, itemPrice);
+				Item newItem = new Item(itemDescription, itemPrice, itemId);
 				allItems.Add(newItem);
 			}
 			conn.Close();

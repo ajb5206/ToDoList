@@ -32,7 +32,7 @@ namespace ToDoList.Tests
 		[TestMethod]
 		public void Save_SavesToDatabase_ItemList()
 		{
-			Item testItem = new Item("Mow the lawn", 10);
+			Item testItem = new Item("Mow the lawn", 1);
 			testItem.Save();
 			List<Item> result = Item.GetAll();
 			List<Item> testList = new List<Item>{testItem};
@@ -75,19 +75,21 @@ namespace ToDoList.Tests
 			CollectionAssert.AreEqual(newList, result);
 		}
 
-// 		[TestMethod]
-// 		public void GetAll_ReturnsItems_ItemList()
-// 		{
-// 			int price01 = 1;
-// 			string description01 = "Walk the dog";
-// 			int price02 = 2;
-// 			string description02 = "Wash the dishes";
-// 			Item newItem1 = new Item(description01, price01);
-// 			Item newItem2 = new Item(description02, price02);
-// 			List<Item> newList = new List<Item> { newItem1, newItem2 };
-// 			List<Item> result = Item.GetAll();
-// 			CollectionAssert.AreEqual(newList, result);
-// 		}
+		[TestMethod]
+		public void GetAll_ReturnsItems_ItemList()
+		{
+			int price01 = 1;
+			string description01 = "Walk the dog";
+			int price02 = 2;
+			string description02 = "Wash the dishes";
+			Item newItem1 = new Item(description01, price01);
+			newItem1.Save();
+			Item newItem2 = new Item(description02, price02);
+			newItem2.Save();
+			List<Item> newList = new List<Item> { newItem1, newItem2 };
+			List<Item> result = Item.GetAll();
+			CollectionAssert.AreEqual(newList, result);
+		}
 
 // 		[TestMethod]
 // 		public void GetId_TemsInstantiateWithanIdAndGetterReturns_Int()
@@ -99,18 +101,16 @@ namespace ToDoList.Tests
 // 			Assert.AreEqual(1, result);
 // 		}
 
-// 		[TestMethod]
-// 		public void Find_ReturnsCorrectItem_Item()
-// 		{
-// 			string description01 = "Walk the dog";
-// 			int price01 = 1;
-// 			string description02 = "Wash the dishes";
-// 			int price02 = 2;
-// 			Item newItem1 = new Item(description01, price01);
-// 			Item newItem2 = new Item(description02, price02);
-// 			Item result = Item.Find(2);
-// 			Assert.AreEqual(newItem2, result);
+		[TestMethod]
+		public void Find_ReturnsCorrectItemFromDatabase_Item()
+		{
+			Item newItem = new Item("Mow the lawn", 1);
+			newItem.Save();
+			Item newItem2 = new Item("Wash the dishes", 1);
+			newItem2.Save()
+			Item foundItem = Item.Find(newItem.Id);
+			Assert.AreEqual(newItem, foundItem);
 			
-// 		}
+		}
 	}
 }
