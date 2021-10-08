@@ -107,7 +107,7 @@ namespace ToDoList.Tests
 			Item newItem = new Item("Mow the lawn", 1);
 			newItem.Save();
 			Item newItem2 = new Item("Wash the dishes", 1);
-			newItem2.Save()
+			newItem2.Save();
 			Item foundItem = Item.Find(newItem.Id);
 			Assert.AreEqual(newItem, foundItem);
 			
